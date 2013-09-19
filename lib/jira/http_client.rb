@@ -18,7 +18,7 @@ module JIRA
     def make_request(http_method, path, body='', headers={})
       request = Net::HTTP.const_get(http_method.to_s.capitalize).new(path, headers)
       request.body = body unless body.nil?
-      request.basic_auth(@options[:username], @options[:password])
+      request.basic_auth(@options[:username], @options[:password] || Base64.decode64(@options[:password_encrypted]))
       response = basic_auth_http_conn.request(request)
       response
     end
